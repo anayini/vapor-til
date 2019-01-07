@@ -11,10 +11,17 @@ public func routes(_ router: Router) throws {
     router.get("hello") { req in
         return "Hello, world!"
     }
-
-    // Example of configuring a controller
-    let todoController = TodoController()
-    router.get("todos", use: todoController.index)
-    router.post("todos", use: todoController.create)
-    router.delete("todos", Todo.parameter, use: todoController.delete)
+    
+//    router.get("api", "acronyms", Int.parameter) { req -> Future<Acronym> in
+//        guard let param = try? req.parameters.next() as Int, let intParam = param as? Int else { return }
+//        return Acronym.self.find(param, on: .sqlite)
+//    }
+//        
+    
+    router.post("api", "acronyms") { req -> Future<Acronym> in
+        let acronym = try req.content.decode(Acronym.self)
+        return acronym.flatMap(to: Acronym.self) { acronym in
+            acronym.save(on: req)
+        }
+    }
 }
