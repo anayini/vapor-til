@@ -16,7 +16,7 @@ public func routes(_ router: Router) throws {
 //        guard let param = try? req.parameters.next() as Int, let intParam = param as? Int else { return }
 //        return Acronym.self.find(param, on: .sqlite)
 //    }
-//        
+//
     
     router.post("api", "acronyms") { req -> Future<Acronym> in
         let acronym = try req.content.decode(Acronym.self)
